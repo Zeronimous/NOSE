@@ -1,0 +1,158 @@
+{
+    "ingles/sample.txt": {
+        "use_limit_des_36": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "use_limit_des_36_1"
+                },
+                {
+                    "type": "placeholder",
+                    "value": "{p2}"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "use_limit_des_36_2"
+                }
+            ]
+        },
+        "use_limit_des_41": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "use_limit_des_41"
+                }
+            ]
+        },
+        "use_limit_des_47": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "use_limit_des_47"
+                }
+            ]
+        },
+        "use_limit_des_76": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "use_limit_des_76"
+                }
+            ]
+        }
+    },
+    "ingles/sample2.txt": {
+        "complex_1": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "complex_1_1"
+                },
+                {
+                    "type": "tag",
+                    "value": "<T>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_1_2"
+                },
+                {
+                    "type": "tag",
+                    "value": "</T>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_1_3"
+                }
+            ]
+        },
+        "complex_2": {
+            "reconstruction": [
+                {
+                    "type": "tag",
+                    "value": "<A>"
+                },
+                {
+                    "type": "placeholder",
+                    "value": "{i}"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_2"
+                },
+                {
+                    "type": "placeholder",
+                    "value": "{/i}"
+                },
+                {
+                    "type": "tag",
+                    "value": "</A>"
+                }
+            ]
+        },
+        "complex_3": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "complex_3_1"
+                },
+                {
+                    "type": "placeholder",
+                    "value": "{p1}"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_3_2"
+                }
+            ]
+        },
+        "complex_5": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "complex_5_1"
+                },
+                {
+                    "type": "tag",
+                    "value": "<B>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_5_2"
+                },
+                {
+                    "type": "tag",
+                    "value": "</B>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_5_3"
+                },
+                {
+                    "type": "tag",
+                    "value": "<I>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_5_4"
+                },
+                {
+                    "type": "tag",
+                    "value": "</I>"
+                },
+                {
+                    "type": "text",
+                    "entry_id": "complex_5_5"
+                }
+            ]
+        },
+        "complex_6": {
+            "reconstruction": [
+                {
+                    "type": "text",
+                    "entry_id": "complex_6"
+                }
+            ]
+        }
+    }
+}
