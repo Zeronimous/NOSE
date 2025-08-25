@@ -13,35 +13,67 @@ def find_text_files(directory):
     return txt_files
 
 def parse_file_content(content):
-    """Extracts and cleans the JSON string from the file content."""
+    """
+    Extracts and cleans the JSON string from the file content.
+    This robust version parses entries one by one to salvage data from corrupt files.
+    """
     match = re.search(r'm_Script\s*=\s*"(.*)"', content, re.DOTALL)
     if not match:
         return None
 
     json_str = match.group(1)
 
-    # 1. Remove BOM character
     if json_str.startswith('\ufeff'):
         json_str = json_str[1:]
 
-    # 2. The file format uses C#-style escaping for quotes (`\"`) and has
-    # newlines (`\r\n`) between array elements, making it invalid JSON.
-    # In Python's view of the raw string, these are `\\"` and `\\r\\n`.
-
-    # Replace `\` followed by `r` or `n` with nothing.
-    # This is safer than a blanket replace of `\r\n`.
     json_str = re.sub(r'\\r|\\n', '', json_str)
 
-    # Replace `\"` with `"`. This is the key to making it valid JSON
-    # without corrupting unicode characters.
-    json_str = json_str.replace('\\"', '"')
+    # Find the content within the "Data":[ ... ] array
+    data_match = re.search(r'{\s*\"Data\"\s*:\s*\[(.*)\]\s*}', json_str, re.DOTALL)
+    if not data_match:
+        # Fallback for files that might only contain the array part
+        data_match = re.search(r'\[(.*)\]', json_str, re.DOTALL)
+        if not data_match:
+            print(f"Warning: Could not find 'Data' array in the script content.")
+            return {"Data": []}
 
-    try:
-        return json.loads(json_str)
-    except json.JSONDecodeError as e:
-        print(f"Failed to parse JSON from content. Error: {e}")
-        print(f"Problematic string: {json_str[:200]}")
-        return None
+    array_content = data_match.group(1).strip()
+
+    # Split the array content into individual object strings.
+    # A split on `},{` is a robust heuristic for this format.
+    object_strings = array_content.split('},{')
+
+    parsed_entries = []
+    if not array_content:
+        return {"Data": []}
+
+    for i, obj_str in enumerate(object_strings):
+        # Add back the braces that were removed by the split
+        if len(object_strings) > 1:
+            if i == 0:
+                obj_str = obj_str + '}'
+            elif i == len(object_strings) - 1:
+                obj_str = '{' + obj_str
+            else:
+                obj_str = '{' + obj_str + '}'
+
+        cleaned_obj_str = obj_str.replace('\\"', '"')
+
+        try:
+            parsed_entry = json.loads(cleaned_obj_str)
+            parsed_entries.append(parsed_entry)
+        except json.JSONDecodeError as e:
+            print(f"---")
+            print(f"ADVERTENCIA: Se omitirá una entrada corrupta en el archivo.")
+            print(f"Error: {e}")
+            id_match = re.search(r'\"ID\"\s*:\s*\"([^\"]+)\"', cleaned_obj_str)
+            if id_match:
+                print(f"La entrada corrupta parece estar cerca de la ID: {id_match.group(1)}")
+            else:
+                print(f"Fragmento de la entrada con problemas (primeros 100 caracteres): {cleaned_obj_str[:100]}")
+            print(f"---")
+
+    return {"Data": parsed_entries}
 
 
 def process_english_text(text, original_id):
